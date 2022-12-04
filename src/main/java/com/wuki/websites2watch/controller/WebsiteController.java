@@ -1,15 +1,12 @@
 package com.wuki.websites2watch.controller;
 
-import com.wuki.websites2watch.model.WebsiteResponse;
+import com.wuki.websites2watch.model.WebsiteBean;
 import com.wuki.websites2watch.repository.WebsiteRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.sql.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class WebsiteController {
@@ -17,10 +14,36 @@ public class WebsiteController {
   private WebsiteRepository websiteRepo = new WebsiteRepository();
 
   @GetMapping("/websites")
-  public List<WebsiteResponse> getAllWebsites(
+  public List<WebsiteBean> getAllWebsites(
           @RequestParam(required = false) String tag,
           @RequestParam(required = false) String region
   ) {
     return websiteRepo.findAll(tag, region);
   }
+
+  @GetMapping("/websites/{idName}")
+  public ResponseEntity<WebsiteBean> getWebsiteByIdName(
+    @PathVariable String idName
+  ){
+    Optional<WebsiteBean> resultByIdName = websiteRepo.findByIdName(idName);
+    if (resultByIdName.isPresent())
+      return ResponseEntity.ok(resultByIdName.get());
+    return ResponseEntity.notFound().build();
+  }
+
+  @DeleteMapping("/websites/{idName}")
+  public ResponseEntity deleteWebsite(
+    @PathVariable String idName
+  ){
+    websiteRepo.deleteWebsiteByIdName(idName);
+    return ResponseEntity.noContent().build();
+  }
+
+  @PostMapping("/websites")
+  public ResponseEntity<WebsiteBean> createWebsite(
+    @RequestBody WebsiteBean request
+  ){
+    return   ResponseEntity.ok(websiteRepo.save(request));
+  }
+
 }

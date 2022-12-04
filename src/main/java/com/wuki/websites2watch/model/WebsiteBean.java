@@ -2,7 +2,7 @@ package com.wuki.websites2watch.model;
 
 import java.util.List;
 
-public class WebsiteResponse {
+public class WebsiteBean implements Cloneable {
 
   private final String idName;
   private final String requestUrl;
@@ -11,12 +11,12 @@ public class WebsiteResponse {
   private final List<String> tags;
   private final List<String> actions;
 
-  public WebsiteResponse(String idName,
-                         String requestUrl,
-                         String description,
-                         List<String> tags,
-                         List<String> actions,
-                         List<String> regions) {
+  public WebsiteBean(String idName,
+                     String requestUrl,
+                     String description,
+                     List<String> tags,
+                     List<String> actions,
+                     List<String> regions) {
     this.idName = idName;
     this.requestUrl = requestUrl;
     this.description = description;
@@ -47,5 +47,16 @@ public class WebsiteResponse {
 
   public List<String> getRegions() {
     return regions;
+  }
+
+  @Override
+  public WebsiteBean clone() {
+    try {
+      WebsiteBean clone = (WebsiteBean) super.clone();
+      // TODO: copy mutable state here, so the clone can't change the internals of the original
+      return clone;
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError();
+    }
   }
 }
