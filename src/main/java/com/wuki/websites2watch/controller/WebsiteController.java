@@ -11,7 +11,11 @@ import java.util.Optional;
 @RestController
 public class WebsiteController {
 
-  private WebsiteRepository websiteRepo = new WebsiteRepository();
+  private WebsiteRepository websiteRepo;
+
+  public WebsiteController(WebsiteRepository repo) {
+    this.websiteRepo = repo;
+  }
 
   @GetMapping("/websites")
   public List<WebsiteBean> getAllWebsites(

@@ -2,12 +2,15 @@ package com.wuki.websites2watch.repository;
 
 import com.wuki.websites2watch.model.WebsiteBean;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class WebsiteRepository {
 
   private List<WebsiteBean> websites = new ArrayList<>();
