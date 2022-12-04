@@ -4,20 +4,20 @@ import java.util.List;
 
 public class WebsiteResponse {
 
-  private final String uniqueName;
+  private final String idName;
   private final String requestUrl;
   private final String description;
   private final List<String> regions;
   private final List<String> tags;
   private final List<String> actions;
 
-  public WebsiteResponse(String uniqueName,
+  public WebsiteResponse(String idName,
                          String requestUrl,
                          String description,
                          List<String> tags,
                          List<String> actions,
                          List<String> regions) {
-    this.uniqueName = uniqueName;
+    this.idName = idName;
     this.requestUrl = requestUrl;
     this.description = description;
     this.tags = tags;
@@ -25,8 +25,8 @@ public class WebsiteResponse {
     this.regions = regions;
   }
 
-  public String getUniqueName() {
-    return uniqueName;
+  public String getIdName() {
+    return idName;
   }
 
   public String getRequestUrl() {
