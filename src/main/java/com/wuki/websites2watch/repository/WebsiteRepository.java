@@ -1,8 +1,6 @@
 package com.wuki.websites2watch.repository;
 
 import com.wuki.websites2watch.model.WebsiteBean;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,33 +10,43 @@ import java.util.Optional;
 
 @Service
 public class WebsiteRepository {
-
-  private List<WebsiteBean> websites = new ArrayList<>();
-
-  {
-    websites.addAll(
-      Arrays.asList(
-        new WebsiteBean(
-          "bg-glattal",
-          "https://www.bg-glattal.ch/vermietung/",
-          "first website to watch",
-          Arrays.asList("Genossenschaft", "Miete"),
-          Arrays.asList("watchSingleChanges"),
-          Arrays.asList("Zürich Schwamendingen")
-        ),
-        new WebsiteBean(
-          "bsh-zürich",
-          "https://www.bsh-zuerich.ch/freie-wohnungen/",
-          "second website to watch",
-          Arrays.asList("Genossenschaft", "Miete"),
-          Arrays.asList("watchSingleChanges"),
-          Arrays.asList("Zürich Frankental")
-        )
+  private List<WebsiteBean> websites;
+  public WebsiteRepository() {
+    websites = new ArrayList<>();
+    List<String> tags = new ArrayList<>();
+    tags.addAll(Arrays.asList("Genossenschaft", "Miete"));
+    List<String> actions = new ArrayList<>();
+    actions.addAll(Arrays.asList("watchSingleChanges"));
+    List<String> regions = new ArrayList<>();
+    regions.addAll(Arrays.asList("Zürich Schwamendingen"));
+    websites.add(
+      new WebsiteBean(
+        "bg-glattal",
+        "https://www.bg-glattal.ch/vermietung/",
+        "first website to watch",
+        tags,
+        actions,
+        regions
       )
     );
+    tags = new ArrayList<>();
+    tags.addAll(Arrays.asList("Genossenschaft", "Miete"));
+    actions = new ArrayList<>();
+    actions.addAll(Arrays.asList("watchSingleChanges"));
+    regions = new ArrayList<>();
+    regions.addAll(Arrays.asList("Zürich Frankental"));
+    websites.add(
+      new WebsiteBean(
+        "bsh-zürich",
+        "https://www.bsh-zuerich.ch/freie-wohnungen/",
+        "second website to watch",
+        tags,
+        actions,
+        regions
+      )
+    );
+
   }
-
-
 
   public List<WebsiteBean> findAll(String tag, String region) {
     List<WebsiteBean> result = new ArrayList<>(websites);
@@ -51,17 +59,27 @@ public class WebsiteRepository {
     return r.stream().map(String::toLowerCase).toList();
   }
 
-  public Optional<WebsiteBean> findByIdName(String idName) {
-    return websites.stream().filter(r -> r.getIdName().equals(idName)).findFirst();
+  public WebsiteBean findByIdName(String idName) {
+    Optional<WebsiteBean> result = websites.stream().filter(r -> r.getIdName().equals(idName)).findFirst();
+    if (result.isPresent())
+      return result.get();
+    return null;
   }
 
   public void deleteWebsiteByIdName(String idName) {
-    websites = websites.stream().filter(r -> !r.getIdName().equals(idName)).toList();
+    List<WebsiteBean> changed = new ArrayList<>();
+    changed.addAll(websites.stream().filter(r -> !r.getIdName().equals(idName)).toList());
+    websites = changed;
   }
 
   public WebsiteBean save(WebsiteBean request) {
     WebsiteBean result = request.clone();
     websites.add(result);
     return result;
+  }
+
+  public void updateWebsite(WebsiteBean updated) {
+    deleteWebsiteByIdName(updated.getIdName());
+    websites.add(updated);
   }
 }

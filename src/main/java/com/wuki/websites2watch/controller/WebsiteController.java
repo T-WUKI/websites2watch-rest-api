@@ -1,53 +1,70 @@
 package com.wuki.websites2watch.controller;
 
-import com.wuki.websites2watch.model.WebsiteBean;
-import com.wuki.websites2watch.repository.WebsiteRepository;
+import com.wuki.websites2watch.exception.Website2watchException;
+import com.wuki.websites2watch.model.*;
+import com.wuki.websites2watch.service.WebsiteService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class WebsiteController {
 
-  private WebsiteRepository websiteRepo;
 
-  public WebsiteController(WebsiteRepository repo) {
-    this.websiteRepo = repo;
+  private WebsiteService service;
+
+  public WebsiteController(WebsiteService service) {
+    this.service = service;
   }
 
   @GetMapping("/websites")
-  public List<WebsiteBean> getAllWebsites(
+  public ResponseEntity<List<WebsiteResponse>> getAllWebsites(
           @RequestParam(required = false) String tag,
           @RequestParam(required = false) String region
   ) {
-    return websiteRepo.findAll(tag, region);
+    List<WebsiteResponse> result = service.findAll(tag, region);
+    if (!result.isEmpty())
+      return ResponseEntity.ok(result);
+    return ResponseEntity.noContent().build();
   }
 
   @GetMapping("/websites/{idName}")
-  public ResponseEntity<WebsiteBean> getWebsiteByIdName(
+  public ResponseEntity<Response> getWebsiteByIdName(
     @PathVariable String idName
   ){
-    Optional<WebsiteBean> resultByIdName = websiteRepo.findByIdName(idName);
-    if (resultByIdName.isPresent())
-      return ResponseEntity.ok(resultByIdName.get());
+    WebsiteResponse result = service.findByIdName(idName);
+    if (result != null)
+      return ResponseEntity.ok(result);
     return ResponseEntity.notFound().build();
   }
 
   @DeleteMapping("/websites/{idName}")
-  public ResponseEntity deleteWebsite(
+  public ResponseEntity<?> deleteWebsite(
     @PathVariable String idName
   ){
-    websiteRepo.deleteWebsiteByIdName(idName);
+    service.deleteWebsiteByIdName(idName);
     return ResponseEntity.noContent().build();
   }
 
   @PostMapping("/websites")
-  public ResponseEntity<WebsiteBean> createWebsite(
-    @RequestBody WebsiteBean request
+  public ResponseEntity<Response> createWebsite(
+    @RequestBody WebsiteRequest request
   ){
-    return   ResponseEntity.ok(websiteRepo.save(request));
+    return ResponseEntity.ok(service.save(request));
+  }
+
+  @PutMapping("/websites/{idName}/tags")
+  public ResponseEntity<Response> updateWebsiteTags(
+    @PathVariable String idName,
+    @RequestBody WebsiteTagsRequest request
+  ) throws Website2watchException {
+    return ResponseEntity.ok(service.updateWebsiteTags(idName, request));
+//    try {
+//      return ResponseEntity.ok(service.updateWebsiteTags(idName, request));
+//    } catch (Website2watchException e) {
+//      return ResponseEntity.status(e.getStatusCode()).body(e);
+//    }
   }
 
 }

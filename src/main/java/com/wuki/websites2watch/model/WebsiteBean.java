@@ -4,19 +4,20 @@ import java.util.List;
 
 public class WebsiteBean implements Cloneable {
 
-  private final String idName;
-  private final String requestUrl;
-  private final String description;
-  private final List<String> regions;
-  private final List<String> tags;
-  private final List<String> actions;
+  private String idName;
+  private String requestUrl;
+  private String description;
+  private List<String> tags;
+  private List<String> actions;
+  private List<String> regions;
 
-  public WebsiteBean(String idName,
-                     String requestUrl,
-                     String description,
-                     List<String> tags,
-                     List<String> actions,
-                     List<String> regions) {
+  public WebsiteBean(
+      String idName,
+      String requestUrl,
+      String description,
+      List<String> tags,
+      List<String> actions,
+      List<String> regions) {
     this.idName = idName;
     this.requestUrl = requestUrl;
     this.description = description;
