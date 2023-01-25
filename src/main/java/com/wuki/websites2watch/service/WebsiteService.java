@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 public class WebsiteService {
 
-  private WebsiteRepository repo;
+  private final WebsiteRepository repo;
 
   public WebsiteService(WebsiteRepository repo) {
     this.repo = repo;
@@ -22,7 +22,7 @@ public class WebsiteService {
   public List<WebsiteResponse> findAll(String tag, String region) {
     return repo.findAll(tag, region)
       .stream()
-      .map(r -> new WebsiteResponse(r))
+      .map(WebsiteResponse::new)
       .toList();
   }
 
