@@ -1,7 +1,6 @@
 package com.wuki.websites2watch.exception;
 
 import com.wuki.websites2watch.model.ErrorResponse;
-import com.wuki.websites2watch.model.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -21,25 +20,34 @@ public class ApiExceptionHandler {
   Logger logger = LoggerFactory.getLogger(ApiExceptionHandler.class);
 
   @ExceptionHandler(value = Throwable.class)
-  public ResponseEntity<Response> handleErrors(HttpServletRequest request, Throwable exception) throws UnsupportedEncodingException {
+  public ResponseEntity<ErrorResponse> handleErrors(HttpServletRequest request, Throwable exception) throws UnsupportedEncodingException {
 
     logger.error("ApiExceptionHandler.handleErrors", exception);
 
-    //default
     HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
     int errorCode = status.value();
     String errorMessage = Optional.ofNullable(exception.getMessage())
       .orElse("An error occurred");
-    //expected
-    if (exception instanceof Website2watchException) {
-      status = ((Website2watchException) exception).getStatusCode();
-      errorCode = ((Website2watchException) exception).getErrorCode();
-    }
     String uriEncoded = URLDecoder.decode(request.getRequestURI(), StandardCharsets.UTF_8.toString());
     ErrorResponse errorInfo = new ErrorResponse(errorCode, errorMessage, uriEncoded);
-    return ResponseEntity.status(status).body(errorInfo);
+    return new ResponseEntity<ErrorResponse>(errorInfo, status);
   }
 
-}
+  @ExceptionHandler(value = Website2watchException.class)
+  public ResponseEntity<ErrorResponse> handleErrors(HttpServletRequest request, Website2watchException exception) throws UnsupportedEncodingException {
+
+    logger.error("ApiExceptionHandler.handleErrors", exception);
+
+    HttpStatus status = exception.getStatusCode();
+    int errorCode = exception.getErrorCode();
+    String errorMessage = exception.getMessage();
+    String uriEncoded = URLDecoder.decode(request.getRequestURI(), StandardCharsets.UTF_8.toString());
+    ErrorResponse errorInfo = new ErrorResponse(errorCode, errorMessage, uriEncoded);
+    return new ResponseEntity<ErrorResponse>(errorInfo, status);
+  }
+
+
+
+  }
 
 

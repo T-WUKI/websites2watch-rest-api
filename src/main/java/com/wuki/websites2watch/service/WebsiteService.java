@@ -6,7 +6,6 @@ import com.wuki.websites2watch.model.WebsiteRequest;
 import com.wuki.websites2watch.model.WebsiteResponse;
 import com.wuki.websites2watch.model.WebsiteTagsRequest;
 import com.wuki.websites2watch.repository.WebsiteRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,7 +42,7 @@ public class WebsiteService {
 
     WebsiteBean origin = repo.findByIdName(idName);
     if (origin == null)
-      throw new Website2watchException("Website not found!", 404);
+      throw new Website2watchException("Website-Entity not found!", 400);
 
     WebsiteBean updated = new WebsiteBean(
       origin.getIdName(),

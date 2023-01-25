@@ -1,7 +1,10 @@
 package com.wuki.websites2watch.controller;
 
 import com.wuki.websites2watch.exception.Website2watchException;
-import com.wuki.websites2watch.model.*;
+import com.wuki.websites2watch.model.Response;
+import com.wuki.websites2watch.model.WebsiteRequest;
+import com.wuki.websites2watch.model.WebsiteResponse;
+import com.wuki.websites2watch.model.WebsiteTagsRequest;
 import com.wuki.websites2watch.service.WebsiteService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -60,11 +63,6 @@ public class WebsiteController {
     @RequestBody WebsiteTagsRequest request
   ) throws Website2watchException {
     return ResponseEntity.ok(service.updateWebsiteTags(idName, request));
-//    try {
-//      return ResponseEntity.ok(service.updateWebsiteTags(idName, request));
-//    } catch (Website2watchException e) {
-//      return ResponseEntity.status(e.getStatusCode()).body(e);
-//    }
   }
 
 }
