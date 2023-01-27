@@ -1,5 +1,6 @@
 package com.wuki.websites2watch.service;
 
+import com.wuki.websites2watch.exception.Website2watchException;
 import com.wuki.websites2watch.model.Website;
 import com.wuki.websites2watch.model.WebsiteResponse;
 import com.wuki.websites2watch.repository.WebsiteRepository;
@@ -23,8 +24,10 @@ public class WebsiteService {
   }
   */
 
-  public WebsiteResponse findByUniqueName(String uniqueName) {
+  public WebsiteResponse findByUniqueName(String uniqueName) throws Website2watchException {
     Website entity = repo.findByUniqueName(uniqueName);
+    if (entity == null)
+      throw new Website2watchException("Website-Entity not found!", 400);
     return new WebsiteResponse(entity);
   }
 

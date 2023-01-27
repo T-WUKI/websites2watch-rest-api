@@ -1,9 +1,8 @@
 package com.wuki.websites2watch.controller;
 
-import com.wuki.websites2watch.model.Response;
+import com.wuki.websites2watch.exception.Website2watchException;
 import com.wuki.websites2watch.model.WebsiteResponse;
 import com.wuki.websites2watch.service.WebsiteService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,13 +32,10 @@ public class WebsiteController {
   */
 
   @GetMapping("/websites/{uniqueName}")
-  public ResponseEntity<Response> getWebsiteByName(
+  public WebsiteResponse getWebsiteByName(
     @PathVariable String uniqueName
-  ){
-    WebsiteResponse result = service.findByUniqueName(uniqueName);
-    if (result != null)
-      return ResponseEntity.ok(result);
-    return ResponseEntity.notFound().build();
+  ) throws Website2watchException {
+    return service.findByUniqueName(uniqueName);
   }
 
   /*
