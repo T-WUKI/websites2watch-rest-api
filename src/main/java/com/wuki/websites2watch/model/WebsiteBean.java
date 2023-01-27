@@ -1,33 +1,43 @@
 package com.wuki.websites2watch.model;
 
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
+@SuppressWarnings("unused")
 public class WebsiteBean implements Cloneable {
 
-  private String idName;
-  private String requestUrl;
-  private String description;
-  private List<String> tags;
-  private List<String> actions;
-  private List<String> regions;
+  private final String uniqueName;
+  private final String requestUrl;
+  private final String description;
+  private final Set<String> tags;
+  private final Set<String> actions;
+  private final Set<String> regions;
 
   public WebsiteBean(
-      String idName,
+      String uniqueName,
       String requestUrl,
       String description,
-      List<String> tags,
-      List<String> actions,
-      List<String> regions) {
-    this.idName = idName;
+      Set<Tag> tags,
+      Set<Action> actions,
+      Set<Region> regions) {
+    this.uniqueName = uniqueName;
     this.requestUrl = requestUrl;
     this.description = description;
-    this.tags = tags;
-    this.actions = actions;
-    this.regions = regions;
+    this.tags = extractValues(tags);
+    this.actions = extractValues(actions);
+    this.regions = extractValues(regions);
   }
 
-  public String getIdName() {
-    return idName;
+  Set<String> extractValues(Set<? extends ISingleValue<String>> inputSet) {
+    Set<String> result = new LinkedHashSet<>();
+    for (ISingleValue<String> singleValue: inputSet) {
+      result.add(singleValue.getVal());
+    }
+    return result;
+  }
+
+  public String getUniqueName() {
+    return uniqueName;
   }
 
   public String getRequestUrl() {
@@ -38,24 +48,23 @@ public class WebsiteBean implements Cloneable {
     return description;
   }
 
-  public List<String> getTags() {
+  public Set<String> getTags() {
     return tags;
   }
 
-  public List<String> getActions() {
+  public Set<String> getActions() {
     return actions;
   }
 
-  public List<String> getRegions() {
+  public Set<String> getRegions() {
     return regions;
   }
 
   @Override
   public WebsiteBean clone() {
     try {
-      WebsiteBean clone = (WebsiteBean) super.clone();
       // TODO: copy mutable state here, so the clone can't change the internals of the original
-      return clone;
+      return (WebsiteBean) super.clone();
     } catch (CloneNotSupportedException e) {
       throw new AssertionError();
     }

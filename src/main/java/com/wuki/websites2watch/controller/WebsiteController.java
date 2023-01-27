@@ -1,26 +1,25 @@
 package com.wuki.websites2watch.controller;
 
-import com.wuki.websites2watch.exception.Website2watchException;
 import com.wuki.websites2watch.model.Response;
-import com.wuki.websites2watch.model.WebsiteRequest;
 import com.wuki.websites2watch.model.WebsiteResponse;
-import com.wuki.websites2watch.model.WebsiteTagsRequest;
 import com.wuki.websites2watch.service.WebsiteService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@SuppressWarnings("unused")
 public class WebsiteController {
 
 
-  private WebsiteService service;
+  private final WebsiteService service;
 
   public WebsiteController(WebsiteService service) {
     this.service = service;
   }
 
+  /*
   @GetMapping("/websites")
   public ResponseEntity<List<WebsiteResponse>> getAllWebsites(
           @RequestParam(required = false) String tag,
@@ -31,17 +30,19 @@ public class WebsiteController {
       return ResponseEntity.ok(result);
     return ResponseEntity.noContent().build();
   }
+  */
 
-  @GetMapping("/websites/{idName}")
-  public ResponseEntity<Response> getWebsiteByIdName(
-    @PathVariable String idName
+  @GetMapping("/websites/{uniqueName}")
+  public ResponseEntity<Response> getWebsiteByName(
+    @PathVariable String uniqueName
   ){
-    WebsiteResponse result = service.findByIdName(idName);
+    WebsiteResponse result = service.findByUniqueName(uniqueName);
     if (result != null)
       return ResponseEntity.ok(result);
     return ResponseEntity.notFound().build();
   }
 
+  /*
   @DeleteMapping("/websites/{idName}")
   public ResponseEntity<?> deleteWebsite(
     @PathVariable String idName
@@ -64,5 +65,5 @@ public class WebsiteController {
   ) throws Website2watchException {
     return ResponseEntity.ok(service.updateWebsiteTags(idName, request));
   }
-
+*/
 }

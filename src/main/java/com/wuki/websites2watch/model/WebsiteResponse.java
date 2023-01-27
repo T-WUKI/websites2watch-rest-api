@@ -1,6 +1,6 @@
 package com.wuki.websites2watch.model;
 
-import java.util.List;
+import java.util.Set;
 
 public class WebsiteResponse extends WebsiteBean implements Response {
 
@@ -8,15 +8,16 @@ public class WebsiteResponse extends WebsiteBean implements Response {
       String idName,
       String requestUrl,
       String description,
-      List<String> tags,
-      List<String> actions,
-      List<String> regions) {
+      Set<Tag> tags,
+      Set<Action> actions,
+      Set<Region> regions) {
     super(idName, requestUrl, description, tags, actions, regions);
   }
 
-  public WebsiteResponse(WebsiteBean base) {
+
+  public WebsiteResponse(Website base) {
     this(
-      base.getIdName(),
+      base.getName(),
       base.getRequestUrl(),
       base.getDescription(),
       base.getTags(),

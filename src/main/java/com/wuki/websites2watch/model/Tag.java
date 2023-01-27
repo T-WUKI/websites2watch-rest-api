@@ -2,12 +2,13 @@ package com.wuki.websites2watch.model;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table(name="TBTAG")
 @SuppressWarnings("unused")
-public class Tag {
+public class Tag implements Serializable, ISingleValue<String> {
 
   private long id;
   private int version;
@@ -41,7 +42,7 @@ public class Tag {
     this.val = val;
   }
 
-  @ManyToMany(mappedBy="tags")
+  @ManyToMany(mappedBy="tags", fetch = FetchType.LAZY)
   public Set<Website> getSites() {
     return sites;
   }

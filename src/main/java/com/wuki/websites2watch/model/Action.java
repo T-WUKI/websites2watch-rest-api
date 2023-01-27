@@ -8,7 +8,7 @@ import java.util.Set;
 @Entity
 @Table(name="TBACTION")
 @SuppressWarnings("unused")
-public class Action implements Serializable {
+public class Action implements Serializable, ISingleValue<String> {
 
   private long id;
   private int version;
@@ -42,7 +42,7 @@ public class Action implements Serializable {
     this.val = val;
   }
 
-  @ManyToMany(mappedBy="actions")
+  @ManyToMany(mappedBy="actions", fetch = FetchType.LAZY)
   public Set<Website> getSites() {
     return sites;
   }

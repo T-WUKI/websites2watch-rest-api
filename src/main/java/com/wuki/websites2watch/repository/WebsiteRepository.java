@@ -1,15 +1,18 @@
 package com.wuki.websites2watch.repository;
 
-import com.wuki.websites2watch.model.WebsiteBean;
+import com.wuki.websites2watch.model.Website;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
 @Service
-public class WebsiteRepository {
+public interface WebsiteRepository extends JpaRepository<Website,Long> {
+
+  @Query(value = "SELECT w FROM Website w where w.name = :uniqueName ")
+  Website findByUniqueName(String uniqueName);
+
+  /*
+
   private List<WebsiteBean> websites;
   public WebsiteRepository() {
     websites = new ArrayList<>();
@@ -82,4 +85,6 @@ public class WebsiteRepository {
     deleteWebsiteByIdName(updated.getIdName());
     websites.add(updated);
   }
+
+  */
 }
