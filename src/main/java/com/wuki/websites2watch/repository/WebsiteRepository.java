@@ -5,11 +5,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface WebsiteRepository extends JpaRepository<Website,Long> {
 
   @Query(value = "SELECT w FROM Website w where w.name = :uniqueName ")
   Website findByUniqueName(String uniqueName);
+
+  List<Website> findAll();
+
+  //Website save(Website newEntity);
 
   /*
 

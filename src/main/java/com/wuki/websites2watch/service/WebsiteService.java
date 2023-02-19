@@ -6,6 +6,9 @@ import com.wuki.websites2watch.model.WebsiteResponse;
 import com.wuki.websites2watch.repository.WebsiteRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class WebsiteService {
 
@@ -24,12 +27,31 @@ public class WebsiteService {
   }
   */
 
+  public List<WebsiteResponse> findAll(String tag, String region) {
+    List<WebsiteResponse> result = new ArrayList<>();
+    List<Website> queryResult = repo.findAll();
+    for (Website website: queryResult) {
+      result.add(new WebsiteResponse(website));
+    }
+    return result;
+  }
+
   public WebsiteResponse findByUniqueName(String uniqueName) throws Website2watchException {
     Website entity = repo.findByUniqueName(uniqueName);
     if (entity == null)
       throw new Website2watchException("Website-Entity not found!", 400);
     return new WebsiteResponse(entity);
   }
+
+  public WebsiteResponse save(Website website) throws Website2watchException {
+    Website entity = repo.findByUniqueName(website.getName());
+    if (entity != null)
+      throw new Website2watchException("Website-Entity already exists!", 400);
+    return new WebsiteResponse(repo.save(website));
+  }
+
+
+
 
   /*
   public void deleteWebsiteByIdName(String idName){

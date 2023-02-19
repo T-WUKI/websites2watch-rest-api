@@ -34,6 +34,7 @@ public class Action implements Serializable, ISingleValue<String> {
     this.version = version;
   }
 
+  @Column(unique = true)
   public String getVal() {
     return val;
   }

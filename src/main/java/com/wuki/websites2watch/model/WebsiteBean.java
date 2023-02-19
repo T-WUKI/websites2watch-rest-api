@@ -1,40 +1,39 @@
 package com.wuki.websites2watch.model;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 @SuppressWarnings("unused")
 public class WebsiteBean implements Cloneable {
 
   private final String uniqueName;
   private final String requestUrl;
   private final String description;
-  private final Set<String> tags;
-  private final Set<String> actions;
-  private final Set<String> regions;
 
   public WebsiteBean(
       String uniqueName,
       String requestUrl,
-      String description,
-      Set<Tag> tags,
-      Set<Action> actions,
-      Set<Region> regions) {
+      String description) {
     this.uniqueName = uniqueName;
     this.requestUrl = requestUrl;
     this.description = description;
-    this.tags = extractValues(tags);
-    this.actions = extractValues(actions);
-    this.regions = extractValues(regions);
   }
 
-  Set<String> extractValues(Set<? extends ISingleValue<String>> inputSet) {
-    Set<String> result = new LinkedHashSet<>();
-    for (ISingleValue<String> singleValue: inputSet) {
-      result.add(singleValue.getVal());
-    }
-    return result;
-  }
+  /*
+  public WebsiteBean(
+    String uniqueName,
+    String requestUrl,
+    String description,
+    List<String> tags,
+    List<String> actions,
+    List<String> regions) {
+    this.uniqueName = uniqueName;
+    this.requestUrl = requestUrl;
+    this.description = description;
+    this.tags = new HashSet<>(tags);
+    this.actions = new HashSet<>(actions);
+    this.regions = new HashSet<>(regions);
+ }
+ */
+
+
 
   public String getUniqueName() {
     return uniqueName;
@@ -48,17 +47,6 @@ public class WebsiteBean implements Cloneable {
     return description;
   }
 
-  public Set<String> getTags() {
-    return tags;
-  }
-
-  public Set<String> getActions() {
-    return actions;
-  }
-
-  public Set<String> getRegions() {
-    return regions;
-  }
 
   @Override
   public WebsiteBean clone() {

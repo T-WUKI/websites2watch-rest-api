@@ -17,6 +17,18 @@ public class Website {
   private Set<Action> actions;
   private Set<Region> regions;
 
+  public Website() {
+  }
+
+  public Website(WebsiteRequest req) {
+    this.name = req.getUniqueName();
+    this.requestUrl = req.getRequestUrl();
+    this.description = req.getDescription();
+    this.tags = req.getTags();
+    this.actions = req.getActions();
+    this.regions = req.getRegions();
+  }
+
   @Id
   @GeneratedValue(strategy=GenerationType.AUTO)
   public long getId() {
@@ -36,6 +48,7 @@ public class Website {
     this.version = version;
   }
 
+  @Column(unique = true)
   public String getName() {
     return name;
   }
