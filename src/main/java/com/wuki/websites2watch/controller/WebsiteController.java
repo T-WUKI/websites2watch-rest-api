@@ -8,6 +8,7 @@ import com.wuki.websites2watch.service.ActionService;
 import com.wuki.websites2watch.service.RegionService;
 import com.wuki.websites2watch.service.TagService;
 import com.wuki.websites2watch.service.WebsiteService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +32,8 @@ public class WebsiteController {
     this.actionService = actionService;
     this.regionService = regionService;
   }
+
+
 
   /*
   @GetMapping("/websites")
@@ -72,15 +75,15 @@ public class WebsiteController {
     return wsService.save(website);
   }
 
-
-  /*
-  @DeleteMapping("/websites/{idName}")
+  @DeleteMapping("/websites/{uniqueName}")
   public ResponseEntity<?> deleteWebsite(
-    @PathVariable String idName
-  ){
-    service.deleteWebsiteByIdName(idName);
+    @PathVariable String uniqueName
+  ) throws Website2watchException {
+    wsService.deleteWebsiteByUniqueName(uniqueName, tagService, actionService, regionService);
     return ResponseEntity.noContent().build();
   }
+
+  /*
 
   @PostMapping("/websites")
   public ResponseEntity<Response> createWebsite(

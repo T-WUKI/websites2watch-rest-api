@@ -32,5 +32,16 @@ public class ActionService {
     return result;
   }
 
+  public void deleteActions(Website website) {
+    for (Action action : website.getActions()) {
+      if (action.getSites().size() == 1) {
+        repo.delete(action);
+      }
+      else {
+        action.getSites().remove(website);
+      }
+    }
+  }
+
 
 }

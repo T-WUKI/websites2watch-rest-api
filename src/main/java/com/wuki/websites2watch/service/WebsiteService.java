@@ -51,12 +51,18 @@ public class WebsiteService {
   }
 
 
-
+  public void deleteWebsiteByUniqueName(String uniqueName, TagService tagService, ActionService actionService, RegionService regionService) throws Website2watchException {
+    Website entity = repo.findByUniqueName(uniqueName);
+    if (entity == null)
+      throw new Website2watchException("Website-Entity not found!", 400);
+    tagService.deleteTags(entity);
+    actionService.deleteActions(entity);
+    regionService.deleteRegions(entity);
+    repo.delete(entity);
+  }
 
   /*
-  public void deleteWebsiteByIdName(String idName){
-    repo.deleteWebsiteByIdName(idName);
-  }
+
 
   public WebsiteResponse save(WebsiteRequest request) {
     return new WebsiteResponse(repo.save(request));

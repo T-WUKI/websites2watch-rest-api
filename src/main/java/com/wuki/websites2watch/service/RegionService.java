@@ -32,5 +32,16 @@ public class RegionService {
     return result;
   }
 
+  public void deleteRegions(Website website) {
+    for (Region region : website.getRegions()) {
+      if (region.getSites().size() == 1) {
+        repo.delete(region);
+      }
+      else {
+        region.getSites().remove(website);
+      }
+    }
+  }
+
 
 }

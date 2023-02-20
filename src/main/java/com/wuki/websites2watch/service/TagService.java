@@ -32,5 +32,16 @@ public class TagService {
     return result;
   }
 
+  public void deleteTags(Website website) {
+    for (Tag tag : website.getTags()) {
+      if (tag.getSites().size() == 1) {
+        repo.delete(tag);
+      }
+      else {
+        tag.getSites().remove(website);
+      }
+    }
+  }
+
 
 }
